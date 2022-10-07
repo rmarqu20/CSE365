@@ -1,0 +1,76 @@
+3947-bin,1,Skip to content
+3947-bin,2,Sign up
+3947-bin,3,Hosting
+3947-bin,4,Explore
+3947-bin,5,Explore GitHub →
+3947-bin,6,Learn & contribute
+3947-bin,7,Learning Lab
+3947-bin,8,Connect with others
+3947-bin,9,Compare plans
+3947-bin,10,Jump to
+3947-bin,11,Jump to
+3947-bin,12,Jump to
+3947-bin,13,Sign in
+3947-bin,14,Sign up
+3947-bin,15,Watch
+3947-bin,16,Fork
+3947-bin,17,Pull requests
+3947-bin,18,Pull requests
+3947-bin,19,Go to file
+3947-bin,20,Git stats
+3947-bin,21,Failed to load latest commit information.
+3947-bin,22,Someone hid his flag here..
+3947-bin,23,guess we better give up.
+3947-bin,24,Let's look at the server to see what it can do
+3947-bin,25,"It accepts four commands, two of which seem interesting:"
+3947-bin,26,decrypt: Decrypts the input data.
+3947-bin,27,secret: Accepts an encrypted command and executes it
+3947-bin,28,One of the accepted
+3947-bin,29,"commands returns the flag, encrypted."
+3947-bin,30,So it looks like we'll need to convince the server to give us the encrypted
+3947-bin,31,"flag, then pass that to the decrypt command to get the plaintext"
+3947-bin,32,But how do we
+3947-bin,33,execute the secret 'flag' command when it needs to be sent in encrypted form?
+3947-bin,34,Let's take a closer look at how the decryption is done
+3947-bin,35,"The block cipher is used in CBC mode, with the IV provided as the first block of the message:"
+3947-bin,36,Looking closely at the
+3947-bin,37,we see that:
+3947-bin,38,"This means that the ""plaintext"" block the server will interpret as a command is"
+3947-bin,39,"controlled by two components - the decryption of the provided ciphertext block,"
+3947-bin,40,The decrypted block is impossible for us to control without the
+3947-bin,41,"key, but the IV is completely under our control! So, if we find the decryption"
+3947-bin,42,"of some arbitrary block, we can select an IV that XORs into it to produce"
+3947-bin,43,exactly the plaintext we're hoping for.
+3947-bin,44,So what plaintext do we have to produce?
+3947-bin,45,"We want the 'flag' function to be called, so we need the text 'flag' to be in"
+3947-bin,46,"So, we're aiming to produce a plaintext block including the"
+3947-bin,47,The steps to do this are:
+3947-bin,48,Get the decryption of an all-zeros data block with an all-zeros IV.
+3947-bin,49,"XOR the desired text ('flag') into the result, use that as the new IV."
+3947-bin,50,Try decrypting this ciphertext with the new IV to check it comes out
+3947-bin,51,containing 'flag'.
+3947-bin,52,Send this ciphertext as an encrypted command in response to the 'secret'
+3947-bin,53,Receive an encrypted flag as the output.
+3947-bin,54,Use the 'decrypt' command to decrypt the flag.
+3947-bin,55,A script that solves this challenge is provided in
+3947-bin,56,Help
+3947-bin,57,You can't perform that action at this time.
+3947-bin,58,You signed in with another tab or window
+3947-bin,59,Reload to refresh your session.
+3947-bin,60,You signed out in another tab or window
+3947-bin,61,Reload to refresh your session.
+3947-bin,62,We use optional third-party analytics cookies to understand how you use GitHub.com so we can build better products.
+3947-bin,63,Learn more.
+3947-bin,64,Accept
+3947-bin,65,Reject
+3947-bin,66,We use optional third-party analytics cookies to understand how you use GitHub.com so we can build better products.
+3947-bin,67,You can always update your selection by clicking Cookie Preferences at the bottom of the page.
+3947-bin,68,"For more information, see our Privacy Statement."
+3947-bin,69,"We use essential cookies to perform essential website functions, e.g"
+3947-bin,70,they're used to log you in.
+3947-bin,71,Learn more
+3947-bin,72,"We use analytics cookies to understand how you use our websites so we can make them better, e.g"
+3947-bin,73,they're used to gather information about the pages you visit and how many clicks you need to accomplish a task.
+3947-bin,74,Learn more
+3947-bin,75,Accept
+3947-bin,76,Reject

@@ -1,0 +1,84 @@
+5007-bin,1,Skip to content
+5007-bin,2,Sign up
+5007-bin,3,Hosting
+5007-bin,4,Explore
+5007-bin,5,Explore GitHub →
+5007-bin,6,Learn & contribute
+5007-bin,7,Learning Lab
+5007-bin,8,Connect with others
+5007-bin,9,Compare plans
+5007-bin,10,Jump to
+5007-bin,11,Jump to
+5007-bin,12,Jump to
+5007-bin,13,Sign in
+5007-bin,14,Sign up
+5007-bin,15,Watch
+5007-bin,16,Fork
+5007-bin,17,Pull requests
+5007-bin,18,Pull requests
+5007-bin,19,Go to file
+5007-bin,20,Git stats
+5007-bin,21,Failed to load latest commit information.
+5007-bin,22,The general idea was simple -  the authors used double encryption with DES and Blowfish and the task was to decode the message.
+5007-bin,23,Authors used some shady website for encryption and not the ciphers directly
+5007-bin,24,"This website was adding random paddings and without knowing about it, there was no way to solve it"
+5007-bin,25,Fortunately this was released as a hint.
+5007-bin,26,The authors for no apparent reason have given an example payload apart from the flag
+5007-bin,27,"This suggested a meet-in-the-middle attack using this payload, which was not a good approach, because the example payload was encrypted with different keys than the flag."
+5007-bin,28,The calculations for this task were a bit time consuming due to key universum size
+5007-bin,29,"Seriously, there is no need to make a task where bruteforce is taking minutes to run on 8 paralell cores"
+5007-bin,30,"It doesn't make the task any ""harder"", only more annoying."
+5007-bin,31,So what we have here is the encrypted flag:
+5007-bin,32,"And we know that the flag was encrypted first with DES with padding, the data were transformed into base64 and this was encrypted again with Blowfish with padding and it was encoded as base64."
+5007-bin,33,We also know that both keys are in the range 0-9999999.
+5007-bin,34,So we run bruteforce first on the outer layer - to decode Blowfish and take all proper base64 results as potential hits.
+5007-bin,35,And then we take those results and try to decode them with DES to look for the flag.
+5007-bin,36,"There is slim chance that such long payload decoded with improper Blowfish key would give us base64 string, and in fact we got only a single hit there."
+5007-bin,37,So we run the bruteforecer:
+5007-bin,38,return False
+5007-bin,39,return True
+5007-bin,40,try:
+5007-bin,41,pass
+5007-bin,42,results[key] = decrypted
+5007-bin,43,where brute() comes from our crypto-commons and is simply:
+5007-bin,44,Run multiprocess workers
+5007-bin,45,":param data_list: data to distribute between workers, one entry per worker"
+5007-bin,46,From this we get the decoded data:
+5007-bin,47,ZeroNights is a perfect place to discuss new attack methods and threats
+5007-bin,48,"It shows ways to attack and defend to its guests, and suggests unorthodox approach to cybersecurity problems solving."
+5007-bin,49,Generalna idea zadania była dość prosta - autorzy zaszyfrowali flagę najopiers DESem a potem Blowfishem a naszym zadaniem jest ją zdekodować.
+5007-bin,50,"Autorzy użyli jakiejś dziwnej strony do szyfrowania, a nie bezpośrednio szyfrów"
+5007-bin,51,Na szczęście później zotało to ujęte jako hint.
+5007-bin,52,"Było to mocno mylące bo suguerowało atak meet-in-the-middle, który był tutaj błędem, ponieważ przykładowy payload używał innych kluczy niż flaga."
+5007-bin,53,"Wiemy że flaga została najpierw zaszyfrowana DESem z paddingiem, następnie enkodowana base64 i zaszyfrowana Blowfishem z paddingiem i znów enkodowana base64."
+5007-bin,54,Uruchamiamy więc brute-forcer najpierw na zewnętrznej warstwie - aby deszyfrować Blowfisha i wziąć wszystkie poprawne base64 jako potencjalne trafienia.
+5007-bin,55,return False
+5007-bin,56,return True
+5007-bin,57,try:
+5007-bin,58,pass
+5007-bin,59,results[key] = decrypted
+5007-bin,60,Run multiprocess workers
+5007-bin,61,":param data_list: data to distribute between workers, one entry per worker"
+5007-bin,62,ZeroNights is a perfect place to discuss new attack methods and threats
+5007-bin,63,"It shows ways to attack and defend to its guests, and suggests unorthodox approach to cybersecurity problems solving."
+5007-bin,64,Help
+5007-bin,65,You can't perform that action at this time.
+5007-bin,66,You signed in with another tab or window
+5007-bin,67,Reload to refresh your session.
+5007-bin,68,You signed out in another tab or window
+5007-bin,69,Reload to refresh your session.
+5007-bin,70,We use optional third-party analytics cookies to understand how you use GitHub.com so we can build better products.
+5007-bin,71,Learn more.
+5007-bin,72,Accept
+5007-bin,73,Reject
+5007-bin,74,We use optional third-party analytics cookies to understand how you use GitHub.com so we can build better products.
+5007-bin,75,You can always update your selection by clicking Cookie Preferences at the bottom of the page.
+5007-bin,76,"For more information, see our Privacy Statement."
+5007-bin,77,"We use essential cookies to perform essential website functions, e.g"
+5007-bin,78,they're used to log you in.
+5007-bin,79,Learn more
+5007-bin,80,"We use analytics cookies to understand how you use our websites so we can make them better, e.g"
+5007-bin,81,they're used to gather information about the pages you visit and how many clicks you need to accomplish a task.
+5007-bin,82,Learn more
+5007-bin,83,Accept
+5007-bin,84,Reject

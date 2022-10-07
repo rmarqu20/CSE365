@@ -1,0 +1,30 @@
+6597-bin,1,"This app works best with JavaScript enabled.Hack all the thingsArticlesMeUIUCTF - Are we out of the woods yet? Reversing 350pApril 30th, 2017/Share/Edit on Github ✏️CTFIt looks like this python script was run through a custom packer"
+6597-bin,2,"It's just Python*, which means it must be easy to reverse, right?"
+6597-bin,3,This was fun little challenge that our team (https://chalmersctf.se) solved together
+6597-bin,4,You are presented with the file packed.py that contains the following code:
+6597-bin,5,return out
+6597-bin,6,We could quickly deduce that there was an embedded python program encoded with base64
+6597-bin,7,In order to reveal the program we decompiled YET_code variable with dis.
+6597-bin,8,This revealed more embedded data:
+6597-bin,9,20 IMPORT_NAME              2 (base64)
+6597-bin,10,22 STORE_NAME               2 (base64)
+6597-bin,11,"2          32 LOAD_CONST               2 (<code object xor_strings at 0x10f9fbf60, file ""YETpacked"", line 2>)"
+6597-bin,12,"8          40 LOAD_CONST               4 (<code object CLEAR_eval_code at 0x10fa38930, file ""YETpacked"", line 8>)"
+6597-bin,13,"By substituting the YET_eval_code function call with the key CLEAR and with the above base64 encoded data, we get an other embedded python program"
+6597-bin,14,This process continues 3 more times until we reach the last and final program
+6597-bin,15,This is how it looks like disassembled:
+6597-bin,16,22 STORE_NAME               5 (accumulated)
+6597-bin,17,64 LOAD_CONST               5 ('Non-hex byte entered!')
+6597-bin,18,30     >>  230 LOAD_NAME                5 (accumulated)
+6597-bin,19,236 STORE_NAME               5 (accumulated)
+6597-bin,20,"244 LOAD_CONST              12 ('Looking at it now, it all seems so simple:')"
+6597-bin,21,246 LOAD_NAME                5 (accumulated)
+6597-bin,22,We managed to reverse engineer the above output into the following python source:
+6597-bin,23,accumulated = ''
+6597-bin,24,#     print('Non-hex byte entered!')
+6597-bin,25,accumulated += flagbyte
+6597-bin,26,"print('Looking at it now, it all seems so simple: {}'.format(accumulated))"
+6597-bin,27,Which revealed:
+6597-bin,28,"Looking at it now, it all seems so simple: flag{th3_m0nst3rs_turned_0ut_2_be_ju5t_tr33s}"
+6597-bin,29,For more writeups visit https://github.com/ChalmersCTF/Writeups and don't forget to check out my friend's and fellow team member's website https://www.nindoda.com/
+6597-bin,30,Enjoys to build things and break things.Buy me a coffee!Ko-FiTwitterGitHubRSSView source

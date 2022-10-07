@@ -1,0 +1,35 @@
+767-bin,1,corrects IE6 width calculation
+767-bin,2,CSAW CTF Quals: Reversing 100 DotNetReversing.exe
+767-bin,3,This challenge was very straightforward and actually took longer to decompile and throw into visual basic than to actually reverse
+767-bin,4,Just running the program will give as an output on a console of:
+767-bin,5,"""Greetings challenger! Step right up and try your shot at gaining the flag!"""
+767-bin,6,"""You'll have to know the pascode to unlock the prize:"""
+767-bin,7,The program then waits for console input
+767-bin,8,"I tried putting in ""test"" and the program immediately threw an exception and crashed"
+767-bin,9,I then proceeded to decompile it in ILSpy and threw the nice C# code into visual basic
+767-bin,10,I immediately noticed a branch statement.
+767-bin,11,"Console.WriteLine(""Incorrect, try again!"");"
+767-bin,12,"Just based on the console output, we can safely assume we want to meet the conditions (num ^ num2) == num3 to get to ""yay."" The ^ operator means XOR (exclusive or) and essentially returns the difference in bit values between the numbers"
+767-bin,13,By looking at the code we can see that num = our input converted to base 64
+767-bin,14,Because num is used later in the program to compute the actual key we need the actual correct value
+767-bin,15,"Because I'm not particularly found of hard math or needless calculations by hand, I changed num = num2^num3"
+767-bin,16,This sets num to the correct value
+767-bin,17,"I then saved the program, ran it, and was presented with:"
+767-bin,18,flag{I'll create a GUI interface using visual basic...see if I can track an IP address.}
+767-bin,19,press key to continue
+767-bin,20,key: I'll create a GUI interface using visual basic...see if I can track an IP address.
+767-bin,21,Posted by
+767-bin,22,"George HafizMarch 4, 2014 at 9:29 AMLulz, the required input is:13371337255 -- leet leet max of 8 bit intThe other two numbers are:65535655351 -- max 16 bit int max 16 bit int '1'Any clues on 53129566096?ReplyDeleteRepliesReplyAdd commentLoad more..."
+767-bin,23,Subscribe to:
+767-bin,24,Begin BidVertiser code
+767-bin,25,CSAW CTF Quals: Recon All
+767-bin,26,CSAW CTF Quals: Reversing 150 - bikinibonanza
+767-bin,27,CSAW CTF Quals: Reversing 500 Noobs First Firmware...
+767-bin,28,CSAW CTF Quals: Reversing 400 Keygenme32
+767-bin,29,CSAW CTF Quals: Reversing 100 DotNetReversing.exe
+767-bin,30,CSAW CTF Quals: Reversing 500 Impossible.nds
+767-bin,31,CSAW CTF Quals: Reversing 200 csaw2013reversing2
+767-bin,32,CSAW CTF Quals: Reversing 100 csaw2013reversing1
+767-bin,33,Start of StatCounter Code for Blogger / Blogspot
+767-bin,34,outside of the include in order to lock Attribution widget
+767-bin,35,Powered by Blogger.

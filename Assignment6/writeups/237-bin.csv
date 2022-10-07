@@ -1,0 +1,24 @@
+237-bin,1,Compare
+237-bin,2,Create new team
+237-bin,3,Get team members
+237-bin,4,Contact us
+237-bin,5,Sign in
+237-bin,6,"There was no clear goal given in the challenge description text (as guessing was the key skill needed in this CTF), so we decided to just poke around on the website"
+237-bin,7,We immediately got an error message urging us to use a mobile browser
+237-bin,8,"Given the clear affinity of the CTF hosts twoards iPhones, we just changed our User-agent to ""iPhone"" (using general.useragent.override in about:config) which worked quite nicely.The site was a well-built ""game simulator"" simulating awesome + and - Buttons to increase and decrease your stats"
+237-bin,9,"Additionally, saving a memo was possible, too! Overwhelmed by the functionality of the site, we quickly discovered the main.js file which contained some automatically obfuscated JavaScript"
+237-bin,10,Jsbeautifier.org returned unobfuscated code revealing that links are built clientside and probably verified serverside (a kind of HMAC - just badly implemented)
+237-bin,11,"The p-Parameter contains the file that should be loaded and the s-Parameter contains the following: calcSHA1(page + ""Ace in the Hole"");Too lazy to reimplement this complex (!!) operation in Python, we just opened the Firebug console and since calcSHA1 leaked to the global window object, we could just create our links directly in the browser"
+237-bin,12,Trying to load index.php got us uninterpreted PHP-Code
+237-bin,13,"what's the goal of the challenge again? After a short visit to the IRC just to flame about the unclear descriptions we loaded the simulator.php-file and noticed these lines:if ($_POST['name'] == ""GM"") die(""you can not view&amp;save with 'GM'"");if (isset($_POST['name'])) $_SESSION['scrap']=$_POST['name'];$db = sqlite_open(""/var/game_db/gamesim_"".$_SESSION['scrap']."".db"");So, GM is the thing we want to have in the name-Parameter? Let's give it a try: Using ""/../gamesim_GM"" as the name lets us bypass the if-condition and loads the file ""/var/game_db/gamesim_/../gamesim_GM.db"" which works nicely because entering a non-existent path and leaving it with ""../"" will not result in an error (due to normalization?)"
+237-bin,14,And this was it
+237-bin,15,The flag was waiting in the memo field for us
+237-bin,16,"500 Points for the flag ""W3LC0M3_T0_L0L0L0L"" left us wondering why so few teams solved that challenge which was not harder than any of the other web-challenges."
+237-bin,17,Go to www.addthis.com/dashboard to customize your tools
+237-bin,18,Sign in with
+237-bin,19,I don't remember
+237-bin,20,Follow @CTFtime
+237-bin,21,© 2012 — 2020 CTFtime team.All tasks and writeups are copyrighted by their respective authors
+237-bin,22,Hosting provided by Transdata.
+237-bin,23,"<script src=""/static/bootstrap/js/bootstrap-scrollspy.js""></script>"
+237-bin,24,"<script src=""/static/bootstrap/js/bootstrap-carousel.js""></script>"

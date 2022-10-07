@@ -1,0 +1,75 @@
+7657-bin,1,Skip to content
+7657-bin,2,Sign up
+7657-bin,3,Hosting
+7657-bin,4,Explore
+7657-bin,5,Explore GitHub →
+7657-bin,6,Learn & contribute
+7657-bin,7,Learning Lab
+7657-bin,8,Connect with others
+7657-bin,9,Compare plans
+7657-bin,10,Jump to
+7657-bin,11,Jump to
+7657-bin,12,Jump to
+7657-bin,13,Sign in
+7657-bin,14,Sign up
+7657-bin,15,write-ups
+7657-bin,16,Watch
+7657-bin,17,Fork
+7657-bin,18,Pull requests
+7657-bin,19,Pull requests
+7657-bin,20,write-ups/backdoorctf17/pwn/funsignals/
+7657-bin,21,Go to file
+7657-bin,22,write-ups/backdoorctf17/pwn/funsignals/
+7657-bin,23,Git stats
+7657-bin,24,Failed to load latest commit information.
+7657-bin,25,The task consists of one 64-bit binary
+7657-bin,26,Let's examine what's under the hood of this challenge.
+7657-bin,27,"First of all, look at the 0x10000023 address"
+7657-bin,28,Flag for this challenge is placed in this address on the CTF server
+7657-bin,29,"So, obviously that we should just print it"
+7657-bin,30,"Okay, let's examine the code."
+7657-bin,31,There is not so much code and everything is pretty straight
+7657-bin,32,In the first syscall at 0x100000b we input string into rsi register
+7657-bin,33,After that we prepare registers for the second syscall
+7657-bin,34,If we look at the table of syscalls for x86_64 architecture then we find out that this syscall is sys_rt_sigreturn.
+7657-bin,35,"For me this doesn't tell much, so let's run the binary and see what this thing do"
+7657-bin,36,I input 'A' * 12 and stopped before the second syscall
+7657-bin,37,The state of our program looks like that:
+7657-bin,38,Each register has rational and understandable value
+7657-bin,39,Pay your attention to the values laying on the stack
+7657-bin,40,"Now, let's execute this sys_rt_sigreturn:"
+7657-bin,41,"You can think ""What the heck?"", but look at the stack before executing the syscall and you find out that all registers are set up with the values from the stack"
+7657-bin,42,This named a stack frame
+7657-bin,43,"According to the Linux man page, sys_rt_sigreturn function returns from signal handler and cleanup stack frame"
+7657-bin,44,"So, if we input a pretty big string then we can control stack frame and hence overwrite all registers, sweet"
+7657-bin,45,This technique called SROP -- Sigreturn Oriented Programming
+7657-bin,46,You can read about it on Google :3
+7657-bin,47,What's next? We can control all registers including rip
+7657-bin,48,The idea is pretty simple: To change rip to syscall address (doesn't matter which of the two) and set all registers to write the flag into stdout
+7657-bin,49,There are two ways to do this:
+7657-bin,50,Using pwntools and its built-in class for Sigreturn frames
+7657-bin,51,Then set needed registers with desirable values and input them.
+7657-bin,52,And more complex way: finding the order of registers in a stack frame and create this frame by yourself.
+7657-bin,53,"I chose the first way, but you can improve your skills by creating a stack frame by yourself (I did it too)."
+7657-bin,54,Exploit that creates the stack frame and input it is placed below:
+7657-bin,55,Help
+7657-bin,56,You can't perform that action at this time.
+7657-bin,57,You signed in with another tab or window
+7657-bin,58,Reload to refresh your session.
+7657-bin,59,You signed out in another tab or window
+7657-bin,60,Reload to refresh your session.
+7657-bin,61,We use optional third-party analytics cookies to understand how you use GitHub.com so we can build better products.
+7657-bin,62,Learn more.
+7657-bin,63,Accept
+7657-bin,64,Reject
+7657-bin,65,We use optional third-party analytics cookies to understand how you use GitHub.com so we can build better products.
+7657-bin,66,You can always update your selection by clicking Cookie Preferences at the bottom of the page.
+7657-bin,67,"For more information, see our Privacy Statement."
+7657-bin,68,"We use essential cookies to perform essential website functions, e.g"
+7657-bin,69,they're used to log you in.
+7657-bin,70,Learn more
+7657-bin,71,"We use analytics cookies to understand how you use our websites so we can make them better, e.g"
+7657-bin,72,they're used to gather information about the pages you visit and how many clicks you need to accomplish a task.
+7657-bin,73,Learn more
+7657-bin,74,Accept
+7657-bin,75,Reject
